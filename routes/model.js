@@ -5,6 +5,7 @@ const dbconfig = require('../bin/database.js');
 const conn = mysql.createConnection(dbconfig);
 
 var app = express();
+
 app.use(express.json())
 
 app.get('/', (req, res) => {
@@ -14,7 +15,7 @@ app.get('/', (req, res) => {
     });
 });
 
-//https://codeforgeek.com/nodejs-mysql-tutorial/
+
 //제조 번호 요청에 따른 응답 (메인화면 페이지)
 app.get('/:pmp_num', (req, res) => {
 var sql =
