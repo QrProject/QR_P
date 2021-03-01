@@ -4,47 +4,81 @@ const dbconfig = require('../bin/database.js');
 
 const conn = mysql.createConnection(dbconfig);
 
-var app = express();
+const app = express();
 
 app.use(express.json())
 
 app.get('/', (req, res) => {
-    res.json({
-        success: true,
-        fail:false
+    var sql =
+               `SELECT A.PMP_MANU_NUM, A.PMP_MODEL_NM, A.PMP_TYPE, A.BORE, A.HEAD, A.CAPACITY
+                      ,B.VISIT_DATE, B.VISIT_ENGINEER_NM, B.VISIT_ENGINEER_PHONE, B.REPAIR_CONTENTS
+                      ,C.SITE_NUM, C.SITE_NM, C.SITE_ADDR
+                      ,D.MANU_COMP_NM, D.MANU_COMP_PHONE, D.DELI_COMP_NM, D.DELI_COMP_PHONE, D.MANU_DT, D.FREE_SRV_ST_DT, D.FREE_SRV_END_DT, D.PAID_SRV_COMP_NM, D.PAID_SRV_COMP_PHONE
+                FROM  PMP_MODEL A
+                LEFT OUTER JOIN PMP_REPAIR_HISTORY B ON A.PMP_MANU_NUM = B.PMP_MANU_NUM
+                LEFT OUTER JOIN SITE_INFO C ON A.PMP_MANU_NUM = C.PMP_MANU_NUM
+                LEFT OUTER JOIN SITE_DETAIL_INFO D ON A.PMP_MANU_NUM = D.PMP_MANU_NUM
+                `;
+
+    var params = mysql.format(sql,[req.params.pmp_num]);
+
+    conn.query(params,(err, data) =>
+    {
+            if(err)
+            {
+                console.error(err);
+                res.status(500).send('Internal Server Error');
+                return;
+            }
+
+            if(data == 0)
+            {
+                res.json('{result:count 0}');
+                return;
+            }
+
+             res.json(data);
     });
 });
 
 
 //제조 번호 요청에 따른 응답 (메인화면 페이지)
+//QR 코드로 통한 접근 필요
 app.get('/:pmp_num', (req, res) => {
-var sql =
-           `SELECT A.PMP_MANU_NUM, A.PMP_MODEL_NM, A.PMP_TYPE, A.BORE, A.HEAD, A.CAPACITY
-                  ,B.VISIT_DATE, B.VISIT_ENGINEER_NM, B.VISIT_ENGINEER_PHONE, B.REPAIR_CONTENTS
-                  ,C.SITE_NUM, C.SITE_NM, C.SITE_ADDR
-                  ,D.MANU_COMP_NM, D.MANU_COMP_PHONE, D.DELI_COMP_NM, D.DELI_COMP_PHONE, D.MANU_DT, D.FREE_SRV_ST_DT, D.FREE_SRV_END_DT, D.PAID_SRV_COMP_NM, D.PAID_SRV_COMP_PHONE
-            FROM  PMP_MODEL A
-            LEFT OUTER JOIN PMP_REPAIR_HISTORY B ON A.PMP_MANU_NUM = B.PMP_MANU_NUM
-            LEFT OUTER JOIN SITE_INFO C ON A.PMP_MANU_NUM = C.PMP_MANU_NUM
-            LEFT OUTER JOIN SITE_DETAIL_INFO D ON A.PMP_MANU_NUM = D.PMP_MANU_NUM
-            WHERE A.PMP_MANU_NUM = ?`;
+    var sql =
+               `SELECT A.PMP_MANU_NUM, A.PMP_MODEL_NM, A.PMP_TYPE, A.BORE, A.HEAD, A.CAPACITY
+                      ,B.VISIT_DATE, B.VISIT_ENGINEER_NM, B.VISIT_ENGINEER_PHONE, B.REPAIR_CONTENTS
+                      ,C.SITE_NUM, C.SITE_NM, C.SITE_ADDR
+                      ,D.MANU_COMP_NM, D.MANU_COMP_PHONE, D.DELI_COMP_NM, D.DELI_COMP_PHONE, D.MANU_DT, D.FREE_SRV_ST_DT, D.FREE_SRV_END_DT, D.PAID_SRV_COMP_NM, D.PAID_SRV_COMP_PHONE
+                FROM  PMP_MODEL A
+                LEFT OUTER JOIN PMP_REPAIR_HISTORY B ON A.PMP_MANU_NUM = B.PMP_MANU_NUM
+                LEFT OUTER JOIN SITE_INFO C ON A.PMP_MANU_NUM = C.PMP_MANU_NUM
+                LEFT OUTER JOIN SITE_DETAIL_INFO D ON A.PMP_MANU_NUM = D.PMP_MANU_NUM
+                WHERE A.PMP_MANU_NUM = ?`;
 
-  var params = mysql.format(sql,[req.params.pmp_num]);
+      var params = mysql.format(sql,[req.params.pmp_num]);
 
-  conn.query(params,(err, data) => {
-      if(err) { console.error(err);  res.status(500).send('Internal Server Error'); return;}
+      conn.query(params,(err, data) =>
+      {
+              if(err)
+              {
+                  console.error(err);
+                  res.status(500).send('Internal Server Error');
+                  return;
+              }
 
-          if(data == 0)
-          {
-            res.json('{result:count 0}');
-            return;
-          }
+              if(data == 0)
+              {
+                  res.json('{result:count 0}');
+                  return;
+              }
 
-           res.json(data);
+               res.json(data);
       });
 
   });
 
+//펌프 사양 Post형태로 추가
 app.post('/add', (req, res) => {
 
     var pmp_manu_num = req.body.pmp_manu_num;
