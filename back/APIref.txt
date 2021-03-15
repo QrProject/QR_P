@@ -1,0 +1,12 @@
+
+//펌프 아이디로 관련된 모든 정보를 얻는다.
+router.get('/model/:pmp_num')
+
+
+#body로부터 얻는법
+router.post =>
+var body = req.body;
+var email = body.email; <= body로부터 추출
+
+var sql = {email: email};
+var query = connection.query('insert into user set?',sql,function(err,rows)=>)
