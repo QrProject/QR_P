@@ -1,5 +1,0 @@
-샘플 사이트
-https://gist.github.com/livelikeabel/909d5dc35e96e3f0bed0cd28cddcdeaf
-
-
-https://codeforgeek.com/nodejs-mysql-tutorial/
