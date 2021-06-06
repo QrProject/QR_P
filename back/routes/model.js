@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql   = require('mysql');
+const mysql = require('mysql');
 const dbconfig = require('../bin/database.js');
 
 const conn = mysql.createConnection(dbconfig);
@@ -10,7 +10,7 @@ app.use(express.json())
 
 app.get('/', (req, res) => {
     var sql =
-               `SELECT A.PMP_MANU_NUM, A.PMP_MODEL_NM, A.PMP_TYPE, A.BORE, A.HEAD, A.CAPACITY
+        `SELECT A.PMP_MANU_NUM, A.PMP_MODEL_NM, A.PMP_TYPE, A.BORE, A.HEAD, A.CAPACITY
                       ,B.VISIT_DATE, B.VISIT_ENGINEER_NM, B.VISIT_ENGINEER_PHONE, B.REPAIR_CONTENTS
                       ,C.SITE_NUM, C.SITE_NM, C.SITE_ADDR
                       ,D.MANU_COMP_NM, D.MANU_COMP_PHONE, D.DELI_COMP_NM, D.DELI_COMP_PHONE, D.MANU_DT, D.FREE_SRV_ST_DT, D.FREE_SRV_END_DT, D.PAID_SRV_COMP_NM, D.PAID_SRV_COMP_PHONE
@@ -20,24 +20,21 @@ app.get('/', (req, res) => {
                 LEFT OUTER JOIN SITE_DETAIL_INFO D ON A.PMP_MANU_NUM = D.PMP_MANU_NUM
                 `;
 
-    var params = mysql.format(sql,[req.params.pmp_num]);
+    var params = mysql.format(sql, [req.params.pmp_num]);
 
-    conn.query(params,(err, data) =>
-    {
-            if(err)
-            {
-                console.error(err);
-                res.status(500).send('Internal Server Error');
-                return;
-            }
+    conn.query(params, (err, data) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
 
-            if(data == 0)
-            {
-                res.json('{result:count 0}');
-                return;
-            }
+        if (data == 0) {
+            res.json('{result:count 0}');
+            return;
+        }
 
-             res.json(data);
+        res.json(data);
     });
 });
 
@@ -46,7 +43,7 @@ app.get('/', (req, res) => {
 //QR 코드로 통한 접근 필요
 app.get('/:pmp_num', (req, res) => {
     var sql =
-               `SELECT A.PMP_MANU_NUM, A.PMP_MODEL_NM, A.PMP_TYPE, A.BORE, A.HEAD, A.CAPACITY
+        `SELECT A.PMP_MANU_NUM, A.PMP_MODEL_NM, A.PMP_TYPE, A.BORE, A.HEAD, A.CAPACITY
                       ,B.VISIT_DATE, B.VISIT_ENGINEER_NM, B.VISIT_ENGINEER_PHONE, B.REPAIR_CONTENTS
                       ,C.SITE_NUM, C.SITE_NM, C.SITE_ADDR
                       ,D.MANU_COMP_NM, D.MANU_COMP_PHONE, D.DELI_COMP_NM, D.DELI_COMP_PHONE, D.MANU_DT, D.FREE_SRV_ST_DT, D.FREE_SRV_END_DT, D.PAID_SRV_COMP_NM, D.PAID_SRV_COMP_PHONE
@@ -56,27 +53,24 @@ app.get('/:pmp_num', (req, res) => {
                 LEFT OUTER JOIN SITE_DETAIL_INFO D ON A.PMP_MANU_NUM = D.PMP_MANU_NUM
                 WHERE A.PMP_MANU_NUM = ?`;
 
-      var params = mysql.format(sql,[req.params.pmp_num]);
+    var params = mysql.format(sql, [req.params.pmp_num]);
 
-      conn.query(params,(err, data) =>
-      {
-              if(err)
-              {
-                  console.error(err);
-                  res.status(500).send('Internal Server Error');
-                  return;
-              }
+    conn.query(params, (err, data) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
 
-              if(data == 0)
-              {
-                  res.json('{result:count 0}');
-                  return;
-              }
+        if (data == 0) {
+            res.json('{result:count 0}');
+            return;
+        }
 
-               res.json(data);
-      });
+        res.json(data);
+    });
 
-  });
+});
 
 //펌프 사양 Post형태로 추가
 app.post('/add', (req, res) => {
@@ -94,10 +88,10 @@ app.post('/add', (req, res) => {
 
     var params = [pmp_manu_num, pmp_model_nm, pmp_type, bore, head, capacity];
 
-    conn.query(sql, params, function(err, result, fields){
-        if(err) {
-          res.status(500).send('Internal Server Error');
-          return;
+    conn.query(sql, params, function (err, result, fields) {
+        if (err) {
+            res.status(500).send('Internal Server Error');
+            return;
         }
         res.json('{result:ok}');
         //res.redirect('/topic/'+result.insertId);//새로운 데이터가 insert될때, 자동으로 생기는 id가 있는데, query 함수의 두번째 인자인 result 객체에서 insertId라는 키로 그 값인 id를 찾을 수 있다. 그것을 통하여 새로 생긴 데이터의 화면을 바로 띄워줄 수 있다.
