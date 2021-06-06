@@ -29,6 +29,7 @@
 
 <script>
 const TEMP_DOMAIN = 'http://3.35.235.144:7000/';
+const TEMP2_DOMAIN = 'http://3.35.235.144:7000/pmp/';
 export default {
   data () {
     return {
@@ -36,7 +37,7 @@ export default {
     };
   },
   async mounted () {
-    const url = `${TEMP_DOMAIN}4444`; // test
+    const url = `${TEMP2_DOMAIN}4444`; // test
     // const data = await fetch('http://localhost:3000/model/4444').then(res => res.json());
     this.url = url;
   }
