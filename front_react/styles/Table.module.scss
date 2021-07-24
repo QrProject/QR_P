@@ -1,0 +1,25 @@
+.table {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid #ccc;
+  border-bottom: 0;
+}
+.row {
+  display: flex;
+  width: 50%;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  &__left,
+  &__right {
+    text-align: center;
+    width: 100%;
+    min-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 5px 0;
+  }
+  &__left {
+    border-right: 1px solid #ccc;
+  }
+}

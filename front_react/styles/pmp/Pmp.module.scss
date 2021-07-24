@@ -1,0 +1,53 @@
+.container {
+  // background-color: #000;
+}
+.tool {
+  text-decoration: underline;
+  font-size: 20px;
+  text-align: center;
+  width: 50%;
+  cursor: pointer;
+}
+
+.tools-wrap {
+  padding: 20px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.table {
+  border: 1px solid #ccc;
+}
+.title {
+  width: 100%;
+  padding: 5px 0;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.table-row {
+  width: 100%;
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.date,
+.engineer,
+.content {
+  text-align: center;
+  padding: 5px 0;
+}
+.date,
+.engineer {
+  width: 25%;
+}
+.content {
+  width: 50%;
+}
