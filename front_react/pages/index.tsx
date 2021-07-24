@@ -12,7 +12,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <QRCode className={styles.qrcode} value={'hello'} size={100} />
+        <QRCode className={styles.qrcode} value="http://3.35.235.144:7000/pmp/1" size={100} />
       </main>
     </div>
   )
