@@ -52,8 +52,8 @@ export default function pmp() {
         <div className={styles.table}>
           <div className={styles.title}>펌프수리내역</div>
             {
-              list3.map(v => (
-                <div className={styles['table-row']}>
+              list3.map((v, i) => (
+                <div className={styles['table-row']} key={`${v}-${i}`}>
                   <div className={styles.date}>{v.date}</div>
                   <div className={styles.engineer}>{v.engineer}</div>
                   <div className={styles.content}>{v.content}</div>
